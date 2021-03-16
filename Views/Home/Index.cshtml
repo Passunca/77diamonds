@@ -1,0 +1,104 @@
+﻿@model developerBackEndTest.Models.diamondEntities
+@{
+    ViewData["Title"] = "Display Data";
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>DataTable</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css" />
+</head>
+<body>
+    <div class="container mb-3 mt-3">
+
+        <table class="table table-bordered" style="width:100%" id="mainDataTable">
+            <thead>
+                <tr>
+                    <th></th>
+                    @{
+                        foreach (var head in Model.ItemPhotoPropertySets.Where(x => x.PropertyId == 1).Select(x => x.Value).Distinct().ToList())
+                        {
+                            <th style="text-align:center">@head</th>
+                        }
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @{
+                    foreach (var row in Model.ItemPhotoPropertySets.Where(x => x.PropertyId == 2).Select(x => x.Value).Distinct().ToList())
+                    {
+                        <tr>
+                            <td style="vertical-align:middle">@row</td>
+
+
+
+                            @{
+                                foreach (var img in Model.ItemPhotoPropertySets.Join(Model.ItemPhotos,
+                                                                                itemPhotoPropertySets => itemPhotoPropertySets.ItemPhotoId,
+                                                                                itemPhoto => itemPhoto.Id,
+                                                                                (ItemPhotoPropertySets, ItemPhotos) => new
+                                                                                {
+                                                                                    imgId = ItemPhotos.Id,
+                                                                                    property = ItemPhotoPropertySets.Value,
+                                                                                    propertyId = ItemPhotoPropertySets.PropertyId,
+                                                                                    fileName = ItemPhotos.FileName,
+                                                                                    isActive = ItemPhotos.IsActive,
+                                                                                    typeId = ItemPhotos.TypeId
+                                                                                }).ToList())
+                                {
+                                    if (img.property == row && img.propertyId == 2 && img.isActive)
+                                    {
+
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-center" style="border:none">
+                                                        <input type="button" value="Add Img"  onclick="window.location.href='@Url.Action("Create", "Home", new {id = img.imgId})'" />
+                     
+                                                        <hr style="width:90%; height:auto; color:#3c3939" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border:none" class="img-size">
+                                                        <img class="img-thumbnail img-responsive" src="~/Content/Images/@img.fileName" alt="@img.fileName not found" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    }
+                                }
+                            }
+
+
+
+
+                        </tr>
+
+                    }
+
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" ></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js" ></script>
+
+    <script>
+        $('#mainDataTable').DataTable();
+    </script>
+</body>
+</html>
+

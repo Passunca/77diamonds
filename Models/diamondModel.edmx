@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="diamondModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ItemPhotoPropertySet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemPhotoId" Type="int" Nullable="false" />
+          <Property Name="PropertyId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemPhotos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemId" Type="int" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Position" Type="int" />
+          <Property Name="Alt" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Properties">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypePropertySet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MediaTypeId" Type="int" Nullable="false" />
+          <Property Name="PropertyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ItemPhotoPropertySet_ItemPhotoPropertySet">
+          <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+          <End Role="ItemPhotoPropertySet" Type="Self.ItemPhotoPropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotoPropertySet">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemPhotoPropertySet_ItemPhotos">
+          <End Role="ItemPhotos" Type="Self.ItemPhotos" Multiplicity="1" />
+          <End Role="ItemPhotoPropertySet" Type="Self.ItemPhotoPropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemPhotos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotoPropertySet">
+              <PropertyRef Name="ItemPhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemPhotos_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
+          <End Role="ItemPhotos" Type="Self.ItemPhotos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotos">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemPhotos_Types">
+          <End Role="Types" Type="Self.Types" Multiplicity="1" />
+          <End Role="ItemPhotos" Type="Self.ItemPhotos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Types">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotos">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypePropertySet_Properties">
+          <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+          <End Role="TypePropertySet" Type="Self.TypePropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TypePropertySet">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypePropertySet_Types">
+          <End Role="Types" Type="Self.Types" Multiplicity="1" />
+          <End Role="TypePropertySet" Type="Self.TypePropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Types">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TypePropertySet">
+              <PropertyRef Name="MediaTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="diamondModelStoreContainer">
+          <EntitySet Name="ItemPhotoPropertySet" EntityType="Self.ItemPhotoPropertySet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemPhotos" EntityType="Self.ItemPhotos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypePropertySet" EntityType="Self.TypePropertySet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ItemPhotoPropertySet_ItemPhotoPropertySet" Association="Self.FK_ItemPhotoPropertySet_ItemPhotoPropertySet">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="ItemPhotoPropertySet" EntitySet="ItemPhotoPropertySet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemPhotoPropertySet_ItemPhotos" Association="Self.FK_ItemPhotoPropertySet_ItemPhotos">
+            <End Role="ItemPhotos" EntitySet="ItemPhotos" />
+            <End Role="ItemPhotoPropertySet" EntitySet="ItemPhotoPropertySet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemPhotos_Items" Association="Self.FK_ItemPhotos_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="ItemPhotos" EntitySet="ItemPhotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemPhotos_Types" Association="Self.FK_ItemPhotos_Types">
+            <End Role="Types" EntitySet="Types" />
+            <End Role="ItemPhotos" EntitySet="ItemPhotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypePropertySet_Properties" Association="Self.FK_TypePropertySet_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="TypePropertySet" EntitySet="TypePropertySet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypePropertySet_Types" Association="Self.FK_TypePropertySet_Types">
+            <End Role="Types" EntitySet="Types" />
+            <End Role="TypePropertySet" EntitySet="TypePropertySet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="diamondModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ItemPhotoPropertySet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemPhotoId" Type="Int32" Nullable="false" />
+          <Property Name="PropertyId" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_ItemPhotoPropertySet_ItemPhotoPropertySet" FromRole="ItemPhotoPropertySet" ToRole="Properties" />
+          <NavigationProperty Name="ItemPhoto" Relationship="Self.FK_ItemPhotoPropertySet_ItemPhotos" FromRole="ItemPhotoPropertySet" ToRole="ItemPhotos" />
+        </EntityType>
+        <EntityType Name="ItemPhoto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="Int32" />
+          <Property Name="Alt" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ItemPhotoPropertySets" Relationship="Self.FK_ItemPhotoPropertySet_ItemPhotos" FromRole="ItemPhotos" ToRole="ItemPhotoPropertySet" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ItemPhotos_Items" FromRole="ItemPhotos" ToRole="Items" />
+          <NavigationProperty Name="Type" Relationship="Self.FK_ItemPhotos_Types" FromRole="ItemPhotos" ToRole="Types" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ItemPhotos" Relationship="Self.FK_ItemPhotos_Items" FromRole="Items" ToRole="ItemPhotos" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ItemPhotoPropertySets" Relationship="Self.FK_ItemPhotoPropertySet_ItemPhotoPropertySet" FromRole="Properties" ToRole="ItemPhotoPropertySet" />
+          <NavigationProperty Name="TypePropertySets" Relationship="Self.FK_TypePropertySet_Properties" FromRole="Properties" ToRole="TypePropertySet" />
+        </EntityType>
+        <EntityType Name="TypePropertySet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MediaTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PropertyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_TypePropertySet_Properties" FromRole="TypePropertySet" ToRole="Properties" />
+          <NavigationProperty Name="Type" Relationship="Self.FK_TypePropertySet_Types" FromRole="TypePropertySet" ToRole="Types" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ItemPhotos" Relationship="Self.FK_ItemPhotos_Types" FromRole="Types" ToRole="ItemPhotos" />
+          <NavigationProperty Name="TypePropertySets" Relationship="Self.FK_TypePropertySet_Types" FromRole="Types" ToRole="TypePropertySet" />
+        </EntityType>
+        <Association Name="FK_ItemPhotoPropertySet_ItemPhotoPropertySet">
+          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+          <End Role="ItemPhotoPropertySet" Type="Self.ItemPhotoPropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotoPropertySet">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemPhotoPropertySet_ItemPhotos">
+          <End Role="ItemPhotos" Type="Self.ItemPhoto" Multiplicity="1" />
+          <End Role="ItemPhotoPropertySet" Type="Self.ItemPhotoPropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemPhotos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotoPropertySet">
+              <PropertyRef Name="ItemPhotoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemPhotos_Items">
+          <End Role="Items" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="ItemPhotos" Type="Self.ItemPhoto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotos">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemPhotos_Types">
+          <End Role="Types" Type="Self.Type" Multiplicity="1" />
+          <End Role="ItemPhotos" Type="Self.ItemPhoto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Types">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemPhotos">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypePropertySet_Properties">
+          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
+          <End Role="TypePropertySet" Type="Self.TypePropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TypePropertySet">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypePropertySet_Types">
+          <End Role="Types" Type="Self.Type" Multiplicity="1" />
+          <End Role="TypePropertySet" Type="Self.TypePropertySet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Types">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TypePropertySet">
+              <PropertyRef Name="MediaTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="diamondEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ItemPhotoPropertySets" EntityType="Self.ItemPhotoPropertySet" />
+          <EntitySet Name="ItemPhotos" EntityType="Self.ItemPhoto" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="Properties" EntityType="Self.Property" />
+          <EntitySet Name="TypePropertySets" EntityType="Self.TypePropertySet" />
+          <EntitySet Name="Types" EntityType="Self.Type" />
+          <AssociationSet Name="FK_ItemPhotoPropertySet_ItemPhotoPropertySet" Association="Self.FK_ItemPhotoPropertySet_ItemPhotoPropertySet">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="ItemPhotoPropertySet" EntitySet="ItemPhotoPropertySets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemPhotoPropertySet_ItemPhotos" Association="Self.FK_ItemPhotoPropertySet_ItemPhotos">
+            <End Role="ItemPhotos" EntitySet="ItemPhotos" />
+            <End Role="ItemPhotoPropertySet" EntitySet="ItemPhotoPropertySets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemPhotos_Items" Association="Self.FK_ItemPhotos_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="ItemPhotos" EntitySet="ItemPhotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemPhotos_Types" Association="Self.FK_ItemPhotos_Types">
+            <End Role="Types" EntitySet="Types" />
+            <End Role="ItemPhotos" EntitySet="ItemPhotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypePropertySet_Properties" Association="Self.FK_TypePropertySet_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="TypePropertySet" EntitySet="TypePropertySets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypePropertySet_Types" Association="Self.FK_TypePropertySet_Types">
+            <End Role="Types" EntitySet="Types" />
+            <End Role="TypePropertySet" EntitySet="TypePropertySets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="diamondModelStoreContainer" CdmEntityContainer="diamondEntities">
+          <EntitySetMapping Name="ItemPhotoPropertySets">
+            <EntityTypeMapping TypeName="diamondModel.ItemPhotoPropertySet">
+              <MappingFragment StoreEntitySet="ItemPhotoPropertySet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ItemPhotoId" ColumnName="ItemPhotoId" />
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemPhotos">
+            <EntityTypeMapping TypeName="diamondModel.ItemPhoto">
+              <MappingFragment StoreEntitySet="ItemPhotos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Alt" ColumnName="Alt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="diamondModel.Item">
+              <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="diamondModel.Property">
+              <MappingFragment StoreEntitySet="Properties">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypePropertySets">
+            <EntityTypeMapping TypeName="diamondModel.TypePropertySet">
+              <MappingFragment StoreEntitySet="TypePropertySet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MediaTypeId" ColumnName="MediaTypeId" />
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Types">
+            <EntityTypeMapping TypeName="diamondModel.Type">
+              <MappingFragment StoreEntitySet="Types">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
